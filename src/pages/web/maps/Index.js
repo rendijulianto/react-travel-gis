@@ -25,7 +25,7 @@ const WebMapsIndex = () => {
     //function "fetchDataPlaces"
     const fetchDataPlaces = async () => {
         //fetching Rest Api
-        await Api.get('/api/web/all_places').then((response) => {
+        await Api.get('/api/web/places/all').then((response) => {
             //set coordinates
             setCoordinates(response.data.data);
         });
