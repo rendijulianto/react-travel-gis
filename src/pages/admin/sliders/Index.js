@@ -24,12 +24,12 @@ import Cookies from 'js-cookie';
 import PaginationComponent from "../../../components/utilities/Pagination";
 
 
-function CategoriesIndex() {
+function SlidersIndex() {
     //title page
-    document.title = "Categories - Administrator Travel GIS";
+    document.title = "Sliders - Administrator Travel GIS";
 
-    //state categories initial array
-    const [categories, setCategories] = useState([]);
+    //state sliders initial array
+    const [sliders, setSliders] = useState([]);
 
     //state current page initial 1
     const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +46,7 @@ function CategoriesIndex() {
     //get token from cookies
     const token = Cookies.get('token');
 
-    //function fetch data categories
+    //function fetch data sliders
     const fetchData = async (pageNumber, searchData) => {
 
         //const variable page
@@ -55,15 +55,15 @@ function CategoriesIndex() {
         //define variable "searchQuery"
         const searchQuery = searchData ? searchData : search
 
-        //fetch data categories
-        await Api.get(`/api/admin/categories?q=${searchQuery}&page=${page}`, {
+        //fetch data sliders
+        await Api.get(`/api/admin/sliders?q=${searchQuery}&page=${page}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         }).then((response) => {
 
-            //set data categories
-            setCategories(response.data.data.data);
+            //set data sliders
+            setSliders(response.data.data.data);
 
             //set current page
             setCurrentPage(response.data.data.current_page);
@@ -78,7 +78,7 @@ function CategoriesIndex() {
 
     //hook
     useEffect(() => {
-        //fetch data categories
+        //fetch data sliders
         fetchData();
     }, []);
 
@@ -86,12 +86,12 @@ function CategoriesIndex() {
     const searchHandler = (e) => {
         e.preventDefault();
 
-        //call function fetch data categories
+        //call function fetch data sliders
         fetchData(1,search);
     }
 
-    //function "deletedCategory"
-    const deleteCategory = (id) => {
+    //function "deleteSlider"
+    const deleteSlider = (id) => {
         //show confirm alert
         confirmAlert({
             title: 'Confirm to delete',
@@ -100,7 +100,7 @@ function CategoriesIndex() {
                 {
                     label: 'Yes',
                     onClick: async () => {
-                        await Api.delete(`/api/admin/categories/${id}`, {
+                        await Api.delete(`/api/admin/sliders/${id}`, {
                             headers: {
                                 'Authorization': `Bearer ${token}`
                             }
@@ -115,7 +115,7 @@ function CategoriesIndex() {
                                     borderRadius: '10px',
                                 }
                             });
-                            //call function fetch data categories
+                            //call function fetch data sliders
                             fetchData();
                         }).catch((error) => {
                             //show toast
@@ -148,14 +148,14 @@ function CategoriesIndex() {
                     <div className="col-12">
                         <div className="card border-0 rounded shadow-sm border-top-success">
                             <div className="card-header">
-                                <span className="font-weight-bold"><i className="fa fa-folder"></i> CATEGORIES</span>
+                                <span className="font-weight-bold"><i className="fa fa-images"></i> SLIDERS</span>
                             </div>
                             <div className="card-body">
                                 <form onSubmit={searchHandler} className="form-group">
                                     <div className="input-group mb-3">
-                                     <Link to="/admin/categories/create" className="btn btn-success btn-md">
+                                     <Link to="/admin/sliders/create" className="btn btn-success btn-md">
                                          <i className="fa fa-plus-circle"></i> Add New</Link>
-                                        <input type="text" className="form-control" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search by category name"/>
+                                        <input type="text" className="form-control" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} placeholder="search by slider name"/>
                                         <button type="submit" className="btn btn-md btn-success"><i className="fa fa-search"></i> Search</button>
                                     </div>
                                 </form>
@@ -165,21 +165,19 @@ function CategoriesIndex() {
                                             <tr>
                                                 <th scope="col">No.</th>
                                                 <th scope="col">Image</th>
-                                                <th scope="col">Category Name</th>
                                                 <th scope="col">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        {categories.map((category,index) => (
+                                        {sliders.map((slider,index) => (
                                             <tr key={index}>
                                                 <td className="text-center">{++index + (currentPage-1)*perPage}</td>
                                                 <td className="text-center">
-                                                    <img src={category.image} alt="" width="50" />
+                                                    <img src={slider.image} alt="" width="50" />
                                                 </td>
-                                                <td>{category.name}</td>
+
                                                 <td className="text-center">
-                                                    <Link to={`/admin/categories/edit/${category.id}`} className="btn btn-sm btn-primary me-2"><i className="fa fa-pencil-alt"></i> </Link>
-                                                    <button onClick={() => deleteCategory(category.id)} className="btn btn-sm btn-danger">
+                                                    <button onClick={() => deleteSlider(slider.id)} className="btn btn-sm btn-danger">
                                                         <i className="fa fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -202,4 +200,4 @@ function CategoriesIndex() {
         </React.Fragment>
     );
 }
-export default CategoriesIndex;
+export default SlidersIndex;

@@ -16,14 +16,18 @@ import Cookies from 'js-cookie';
 //import toats
 import toast from 'react-hot-toast';
 
-function CategoryCreate() {
-    //document title page = "Add new Category - Administrator Travel GIS"
-    document.title = "Add new Category - Administrator Travel GIS";
+function UserCreate() {
+    //document title page = "Add new User - Administrator Travel GIS"
+    document.title = "Add new User - Administrator Travel GIS";
 
     //state name initial empty
     const [name, setName] = useState('');
-    //state image initial empty
-    const [image, setImage] = useState('');
+    //state email initial empty
+    const [email, setEmail] = useState('');
+    //state password intial empty
+    const [password, setPassword] = useState('');
+    //state passwordConfirmation initial empty
+    const [passwordConfirmation, setPasswordConfirmation] = useState('');
     //state validation initial object
     const [validation, setValidation] = useState({});
 
@@ -33,45 +37,29 @@ function CategoryCreate() {
     //history
     const history = useHistory();
 
-    const handleFileChange = (e) => {
-        //define variable for get value image data
-        const imageData = e.target.files[0];
-        if(!imageData.type.match('image.*')){
-            //set state image empty
-            setImage('');
-            //show toast error message "Format file not support"
-            toast.error('Format file not support', {
-                duration:4000,
-                position: "top-right",
-                style: {
-                    borderRadius: "10px",
-                    background: '#333',
-                    color: '#fff',
-                }
-            });
-            return;
-        }
-        setImage(imageData);
-    }
-
-    //arrow function "storeCategory"
-    const storeCategory = async (e) => {
+    //arrow function "storeUser"
+    const storeUser = async (e) => {
         e.preventDefault();
 
         //define formData
         const formData = new FormData();
-        //append image to formData
-        formData.append('image', image);
+
         //append name to formData
         formData.append('name', name);
-        await Api.post('/api/admin/categories', formData, {
+        //append email to formData
+        formData.append('email', email);
+        //append password to formData
+        formData.append('password', password);
+        //append password_confirmation to formData
+        formData.append('password_confirmation', passwordConfirmation);
+        await Api.post('/api/admin/users', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         }).then(() => {
-            //show toast success message "Add new Category success"
-            toast.success('Add new Category success', {
-                duration:4000,
+            //show toast success message "Add new User success"
+            toast.success('Add new User success', {
+                duration: 4000,
                 position: "top-right",
                 style: {
                     borderRadius: "10px",
@@ -79,12 +67,12 @@ function CategoryCreate() {
                     color: '#fff',
                 }
             });
-            //redirect to page "/admin/categories"
-            history.push('/admin/categories');
+            //redirect to page "/admin/users"
+            history.push('/admin/users');
         }).catch(err => {
-            //show toast error message "Add new Category fail"
-            toast.error('Add new Category fail', {
-                duration:4000,
+            //show toast error message "Add new User fail"
+            toast.error('Add new User fail', {
+                duration: 4000,
                 position: "top-right",
                 style: {
                     borderRadius: "10px",
@@ -103,31 +91,68 @@ function CategoryCreate() {
             <div className="col-12">
                 <div className="card border-0 rounded shadow-sm border-top-success">
                     <div className="card-header">
-                        <span className="font-weight-bold"><i className="fa fa-folder"></i> ADD NEW CATEGORY</span>
+                        <span className="font-weight-bold"><i className="fa fa-folder"></i> ADD NEW USER</span>
                     </div>
                     <div className="card-body">
-                        <form onSubmit={storeCategory}>
-                            <div className="mb-3">
-                                <label className="form-label fw-bold">Image</label>
-                                <input type="file" className="form-control" onChange={handleFileChange}/>
-                            </div>
-                            {validation.image && (
-                                <div className="alert alert-danger" role="alert">
-                                    {validation.image[0]}
+                        <form onSubmit={storeUser}>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="mb-3">
+                                        <label className="form-label fw-bold">Full Name</label>
+                                        <input type="text" className="form-control" value={name}
+                                               onChange={(e) => setName(e.target.value)} placeholder="Enter Full Name"/>
+                                    </div>
+                                    {validation.name && (
+                                        <div className="alert alert-danger">
+                                            {validation.name[0]}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                            <div className="mb-3">
-                                <label className="form-label fw-bold">Category Name</label>
-                                <input type="text" className="form-control"  value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Category Name" />
-                            </div>
-                            {validation.name && (
-                                <div className="alert alert-danger" role="alert">
-                                    {validation.name[0]}
+                                <div className="col-md-6">
+                                    <div className="mb-3">
+                                        <label className="form-label fw-bold">Email Address</label>
+                                        <input type="text" className="form-control" value={email}
+                                               onChange={(e) => setEmail(e.target.value)}
+                                               placeholder="Enter Email Address"/>
+                                    </div>
+                                    {validation.email && (
+                                        <div className="alert alert-danger">
+                                            {validation.email[0]}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
+
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="mb-3">
+                                        <label className="form-label fw-bold">Password</label>
+                                        <input type="password" className="form-control" value={password}
+                                               onChange={(e) => setPassword(e.target.value)}
+                                               placeholder="Enter Password"/>
+                                    </div>
+                                    {validation.password && (
+                                        <div className="alert alert-danger">
+                                            {validation.password[0]}
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="col-md-6">
+                                    <div className="mb-3">
+                                        <label className="form-label fw-bold">Password Confirmation</label>
+                                        <input type="password" className="form-control" value={passwordConfirmation}
+                                               onChange={(e) => setPasswordConfirmation(e.target.value)}
+                                               placeholder="Enter Password Confirmation"/>
+                                    </div>
+                                </div>
+                            </div>
                             <div>
-                                <button type="submit" className="btn btn-success btn-md me-2"><i className="fa fa-save"></i> Add New Category</button>
-                                <button type="reset" className="btn btn-md btn-warning"><i className="fa fa-redo"></i> RESET</button>
+                                <button type="submit" className="btn btn-success btn-md me-2"><i
+                                    className="fa fa-save"></i> SAVE
+                                </button>
+                                <button type="reset" className="btn btn-md btn-warning"><i
+                                    className="fa fa-redo"></i> RESET
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -137,4 +162,4 @@ function CategoryCreate() {
     </LayoutAdmin>)
 }
 
-export default CategoryCreate;
+export default UserCreate;

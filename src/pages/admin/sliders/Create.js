@@ -1,5 +1,5 @@
 //import React
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 
 //import Layout Admin
 import LayoutAdmin from '../../../layouts/Admin';
@@ -16,12 +16,10 @@ import Cookies from 'js-cookie';
 //import toats
 import toast from 'react-hot-toast';
 
-function CategoryCreate() {
-    //document title page = "Add new Category - Administrator Travel GIS"
-    document.title = "Add new Category - Administrator Travel GIS";
+function SliderCreate() {
+    //document title page = "Add new Slider - Administrator Travel GIS"
+    document.title = "Add new Slider - Administrator Travel GIS";
 
-    //state name initial empty
-    const [name, setName] = useState('');
     //state image initial empty
     const [image, setImage] = useState('');
     //state validation initial object
@@ -54,23 +52,22 @@ function CategoryCreate() {
         setImage(imageData);
     }
 
-    //arrow function "storeCategory"
-    const storeCategory = async (e) => {
+    //arrow function "storeSlider"
+    const storeSlider = async (e) => {
         e.preventDefault();
 
         //define formData
         const formData = new FormData();
         //append image to formData
         formData.append('image', image);
-        //append name to formData
-        formData.append('name', name);
-        await Api.post('/api/admin/categories', formData, {
+
+        await Api.post('/api/admin/sliders', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         }).then(() => {
-            //show toast success message "Add new Category success"
-            toast.success('Add new Category success', {
+            //show toast success message "Add new Slider success"
+            toast.success('Add new Slider success', {
                 duration:4000,
                 position: "top-right",
                 style: {
@@ -79,11 +76,11 @@ function CategoryCreate() {
                     color: '#fff',
                 }
             });
-            //redirect to page "/admin/categories"
-            history.push('/admin/categories');
+            //redirect to page "/admin/sliders"
+            history.push('/admin/sliders');
         }).catch(err => {
-            //show toast error message "Add new Category fail"
-            toast.error('Add new Category fail', {
+            //show toast error message "Add new Slider fail"
+            toast.error('Add new Slider fail', {
                 duration:4000,
                 position: "top-right",
                 style: {
@@ -103,10 +100,10 @@ function CategoryCreate() {
             <div className="col-12">
                 <div className="card border-0 rounded shadow-sm border-top-success">
                     <div className="card-header">
-                        <span className="font-weight-bold"><i className="fa fa-folder"></i> ADD NEW CATEGORY</span>
+                        <span className="font-weight-bold"><i className="fa fa-folder"></i> ADD NEW SLIDER</span>
                     </div>
                     <div className="card-body">
-                        <form onSubmit={storeCategory}>
+                        <form onSubmit={storeSlider}>
                             <div className="mb-3">
                                 <label className="form-label fw-bold">Image</label>
                                 <input type="file" className="form-control" onChange={handleFileChange}/>
@@ -116,17 +113,9 @@ function CategoryCreate() {
                                     {validation.image[0]}
                                 </div>
                             )}
-                            <div className="mb-3">
-                                <label className="form-label fw-bold">Category Name</label>
-                                <input type="text" className="form-control"  value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter Category Name" />
-                            </div>
-                            {validation.name && (
-                                <div className="alert alert-danger" role="alert">
-                                    {validation.name[0]}
-                                </div>
-                            )}
+
                             <div>
-                                <button type="submit" className="btn btn-success btn-md me-2"><i className="fa fa-save"></i> Add New Category</button>
+                                <button type="submit" className="btn btn-success btn-md me-2"><i className="fa fa-save"></i> SAVE</button>
                                 <button type="reset" className="btn btn-md btn-warning"><i className="fa fa-redo"></i> RESET</button>
                             </div>
                         </form>
@@ -137,4 +126,4 @@ function CategoryCreate() {
     </LayoutAdmin>)
 }
 
-export default CategoryCreate;
+export default SliderCreate;

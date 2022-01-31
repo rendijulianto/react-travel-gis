@@ -23,7 +23,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import Cookies from 'js-cookie';
 
 
-import PaginationComponent from "../../utilities/Pagination";
+import PaginationComponent from "../../../components/utilities/Pagination";
 
 
 
