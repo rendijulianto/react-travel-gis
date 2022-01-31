@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-//import Cookies
+
 import Cookies from 'js-cookie';
 
 //import react router dom
